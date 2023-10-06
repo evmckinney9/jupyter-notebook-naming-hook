@@ -8,7 +8,7 @@ Add the following to your `.pre-commit-config.yaml`:
 
 ```yaml
 - repo: https://github.com/evmckinney9/jupyter-notebook-naming-hook
-  rev: main
+  rev: v0.1.0
   hooks:
     - id: enforce-notebook-naming
 ```
