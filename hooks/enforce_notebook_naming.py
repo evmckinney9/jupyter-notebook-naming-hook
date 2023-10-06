@@ -7,14 +7,38 @@ import sys
 
 def check_notebook_naming(filename):
     # Check for developing notebooks
-    if re.match(r"^dev_.*\.ipynb$", filename):
-        return True
+    if re.match(r"^src/notebooks/dev_.*\.ipynb$", filename):
+        return True, ""
     # Check for deliverable notebooks
-    elif re.match(r"^\d{2}_.*\.ipynb$", filename) or re.match(
-        r"^\d{2}_.*_[a-z]+_\d{4}-\d{2}-\d{2}\.ipynb$", filename
+    elif re.match(r"^src/notebooks/\d{2}_.*\.ipynb$", filename):
+        return True, ""
+    elif re.match(
+        r"^src/notebooks/\d{2}_.*_[a-z]+_\d{4}-\d{2}-\d{2}\.ipynb$", filename
     ):
-        return True
-    return False
+        return True, ""
+
+    # Verbose error messages
+    if not filename.startswith("src/notebooks/"):
+        return False, "Notebook is not in the 'src/notebooks/' directory."
+    elif filename.startswith("src/notebooks/dev_"):
+        return (
+            False,
+            "Developing notebook naming is incorrect. Expected format: 'dev_description.ipynb'",
+        )
+    elif re.match(r"^src/notebooks/\d{2}_.*\.ipynb$", filename):
+        return (
+            False,
+            "Deliverable notebook naming is incorrect. Expected format: '01_description.ipynb'",
+        )
+    elif re.match(
+        r"^src/notebooks/\d{2}_.*_[a-z]+_\d{4}-\d{2}-\d{2}\.ipynb$", filename
+    ):
+        return (
+            False,
+            "Deliverable notebook with date and initials is incorrect. Expected format: '01_description_initials_YYYY-MM-DD.ipynb'",
+        )
+
+    return False, "Unknown naming error."
 
 
 def main():
@@ -24,8 +48,11 @@ def main():
 
     exit_code = 0
     for filename in args.filenames:
-        if not check_notebook_naming(filename):
-            print(f"Invalid notebook naming: {filename}")
+        is_valid, error_message = check_notebook_naming(filename)
+        if not is_valid:
+            print(
+                f"Invalid notebook naming: {filename}. Reason: {error_message}"
+            )
             exit_code = 1
     sys.exit(exit_code)
 
