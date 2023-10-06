@@ -8,4 +8,4 @@ description = "A pre-commit hook to enforce naming conventions for Jupyter noteb
 authors = [{ name = "Evan McKinney", email = "evmckinney9@gmail.com" }]
 
 [project.scripts]
-my-enforce_notebook_naming = "hooks.enforce_notebook_naming:main"
+enforce_notebook_naming = "hooks.enforce_notebook_naming:main"
