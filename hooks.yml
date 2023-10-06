@@ -1,0 +1,5 @@
+-   id: enforce-notebook-naming
+    name: Enforce Notebook Naming Convention
+    entry: hooks/enforce_notebook_naming.py
+    language: python
+    files: src/notebooks/.*\.ipynb$
