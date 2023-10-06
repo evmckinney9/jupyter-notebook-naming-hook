@@ -1,8 +1,8 @@
 [build-system]
 requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
+[project]
 name = "jupyter-notebook-naming-hook"
 version = "0.1.0"
-packages = ["."]
+description = "A pre-commit hook to enforce naming conventions for Jupyter notebooks."
+authors = [{ name = "Evan McKinney", email = "evmckinney9@gmail.com" }]
