@@ -6,3 +6,6 @@ name = "jupyter-notebook-naming-hook"
 version = "0.1.0"
 description = "A pre-commit hook to enforce naming conventions for Jupyter notebooks."
 authors = [{ name = "Evan McKinney", email = "evmckinney9@gmail.com" }]
+
+[project.scripts]
+my-enforce_notebook_naming = "hooks.enforce_notebook_naming:main"
