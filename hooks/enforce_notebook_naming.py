@@ -6,36 +6,40 @@ import sys
 
 
 def check_notebook_naming(filename):
+    # This regex allows any subdirectories within 'src/notebooks/'
+    dev_notebook_regex = r"^src/notebooks/(.*/)?dev_.*\.ipynb$"
+    numbered_notebook_regex = r"^src/notebooks/(.*/)?\d{2}_.*\.ipynb$"
+    dated_notebook_regex = (
+        r"^src/notebooks/(.*/)?\d{2}_.*_[a-z]+_\d{4}-\d{2}-\d{2}\.ipynb$"
+    )
+
     # Check for developing notebooks
-    if re.match(r"^src/notebooks/dev_.*\.ipynb$", filename):
+    if re.match(dev_notebook_regex, filename):
         return True, ""
-    # Check for deliverable notebooks
-    elif re.match(r"^src/notebooks/\d{2}_.*\.ipynb$", filename):
+    # Check for numbered deliverable notebooks
+    elif re.match(numbered_notebook_regex, filename):
         return True, ""
-    elif re.match(
-        r"^src/notebooks/\d{2}_.*_[a-z]+_\d{4}-\d{2}-\d{2}\.ipynb$", filename
-    ):
+    # Check for dated deliverable notebooks
+    elif re.match(dated_notebook_regex, filename):
         return True, ""
 
     # Verbose error messages
     if not filename.startswith("src/notebooks/"):
         return False, "Notebook is not in the 'src/notebooks/' directory."
-    elif filename.startswith("src/notebooks/dev_"):
+    if "/dev_" in filename:
         return (
             False,
-            "Developing notebook naming is incorrect. Expected format: 'dev_description.ipynb'",
+            "Developing notebook naming is incorrect. Expected format: 'dev_description.ipynb' or within a subdirectory.",
         )
-    elif re.match(r"^src/notebooks/\d{2}_.*\.ipynb$", filename):
+    if re.search(r"/\d{2}_", filename):
         return (
             False,
-            "Deliverable notebook naming is incorrect. Expected format: '01_description.ipynb'",
+            "Deliverable notebook naming is incorrect. Expected format: '01_description.ipynb' or within a subdirectory.",
         )
-    elif re.match(
-        r"^src/notebooks/\d{2}_.*_[a-z]+_\d{4}-\d{2}-\d{2}\.ipynb$", filename
-    ):
+    if re.search(r"/\d{2}_.*_[a-z]+_\d{4}-\d{2}-\d{2}", filename):
         return (
             False,
-            "Deliverable notebook with date and initials is incorrect. Expected format: '01_description_initials_YYYY-MM-DD.ipynb'",
+            "Deliverable notebook with date and initials is incorrect. Expected format: '01_description_initials_YYYY-MM-DD.ipynb' or within a subdirectory.",
         )
 
     return False, "Unknown naming error."
